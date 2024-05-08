@@ -12,7 +12,7 @@ int main(int argc,char *argv[])
         return 1;
     }
     else
-      cout<<"Window Opened!!!";
+      cout<<"Window Opened!";
     bool game = true;
    SDL_Event windowevent;
     while(game)
