@@ -10,14 +10,14 @@ SDL_Renderer *rend = NULL;
 bool gameIsRunning=false;
 
 
-int initializing(){
+int starting(){
 if(SDL_Init(SDL_INIT_EVERYTHING)>0){
 std::cout<<"Error: SDL failed to initialize\n"<<"SDL Error:"<<" "<<SDL_GetError()<<'\n';
 return 0;
 }
 
 
- win = SDL_CreateWindow("Drawing Circle",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,SCREEN_WIDTH,SCREEN_HEIGHT, 0);
+ win = SDL_CreateWindow("Create Circle",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,SCREEN_WIDTH,SCREEN_HEIGHT, 0);
 if (!win)
     {
        std::cout<<"Error: SDL failed to open window\n"<<"SDL Error:"<<" "<<SDL_GetError()<<'\n';
@@ -48,7 +48,7 @@ void  game_loop()
 }
 
 
-void draw_Circle( int centerX, int centerY, int radius) {
+void createCircle( int centerX, int centerY, int radius) {
     for (int x = -radius; x <= radius; x++) {
         for (int y = -radius; y <= radius; y++) {
             if (x*x + y*y <= radius*radius) {
@@ -60,15 +60,15 @@ void draw_Circle( int centerX, int centerY, int radius) {
 
 int main(int argc,char *argv[])
 {
-gameIsRunning=initializing();
+gameIsRunning=starting();
 
 while(gameIsRunning)
 {
 	game_loop();
-    SDL_SetRenderDrawColor(rend, 0, 255, 0, 0);
+    SDL_SetRenderDrawColor(rend, 88, 198, 200, 0);
 	SDL_RenderClear(rend);
-	SDL_SetRenderDrawColor(rend, 250, 0, 0, 0);
-    draw_Circle(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,R);
+	SDL_SetRenderDrawColor(rend, 210, 150, 30, 0);
+    createCircle(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,R);
 	SDL_RenderPresent(rend);
 }
 SDL_DestroyWindow(win);
