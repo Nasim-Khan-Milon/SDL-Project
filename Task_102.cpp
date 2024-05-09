@@ -70,18 +70,6 @@ void createCircle( int centerX, int centerY, int radius) {
         }
     }
 }
-// void Draw()
-// {
-
-//     SDL_SetRenderDrawColor(rend, 150, 0, 200, 0);
-// 	SDL_RenderClear(rend);
-//     if(f==0) incrising_radious();
-//     else decreasing_radious();
-// 	SDL_SetRenderDrawColor(rend, 0, 120, 200, 0);
-//     draw_Circle(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,R);
-// 	SDL_RenderPresent(rend);
-
-// }
 
 
 int main(int argc,char *argv[])
