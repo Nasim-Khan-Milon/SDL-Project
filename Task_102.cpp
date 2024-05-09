@@ -11,14 +11,14 @@ SDL_Renderer *rend = NULL;
 bool gameIsRunning=false;
 int f=0;
 
-int initializing(){
+int starting(){
 if(SDL_Init(SDL_INIT_EVERYTHING)!=0){
 std::cout<<"Error: SDL failed to initialize\n"<<"SDL Error:"<<" "<<SDL_GetError()<<'\n';
 return 0;
 }
 
 
- win = SDL_CreateWindow("Drawing Circle",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,SCREEN_WIDTH,SCREEN_HEIGHT, 0);
+ win = SDL_CreateWindow("Increase the Circle Radius",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,SCREEN_WIDTH,SCREEN_HEIGHT, 0);
 if (!win)
     {
        std::cout<<"Error: SDL failed to open window\n"<<"SDL Error:"<<" "<<SDL_GetError()<<'\n';
@@ -51,17 +51,17 @@ void decreasing_radious()
 
 void  game_loop()
 {
-  SDL_Event event;
+  SDL_Event e;
 
-  while(SDL_PollEvent(&event))
+  while(SDL_PollEvent(&e))
      {
-       if(event.type==SDL_QUIT) {gameIsRunning=false; break;}
+       if(e.type==SDL_QUIT) {gameIsRunning=false; break;}
      }
 
 }
 
 
-void draw_Circle( int centerX, int centerY, int radius) {
+void createCircle( int centerX, int centerY, int radius) {
     for (int x = -radius; x <= radius; x++) {
         for (int y = -radius; y <= radius; y++) {
             if (x*x + y*y <= radius*radius) {
@@ -70,28 +70,34 @@ void draw_Circle( int centerX, int centerY, int radius) {
         }
     }
 }
-void Draw()
-{
+// void Draw()
+// {
 
-    SDL_SetRenderDrawColor(rend, 150, 0, 200, 0);
-	SDL_RenderClear(rend);
-   if(f==0) incrising_radious();
-   else decreasing_radious();
-	SDL_SetRenderDrawColor(rend, 0, 120, 200, 0);
-    draw_Circle(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,R);
-	SDL_RenderPresent(rend);
+//     SDL_SetRenderDrawColor(rend, 150, 0, 200, 0);
+// 	SDL_RenderClear(rend);
+//     if(f==0) incrising_radious();
+//     else decreasing_radious();
+// 	SDL_SetRenderDrawColor(rend, 0, 120, 200, 0);
+//     draw_Circle(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,R);
+// 	SDL_RenderPresent(rend);
 
-}
+// }
 
 
 int main(int argc,char *argv[])
 {
-gameIsRunning=initializing();
+gameIsRunning=starting();
 
 while(gameIsRunning)
 {
 	game_loop();
-    Draw();
+    SDL_SetRenderDrawColor(rend, 88, 198, 200, 0);
+	SDL_RenderClear(rend);
+    if(f==0) incrising_radious();
+    else decreasing_radious();
+	SDL_SetRenderDrawColor(rend, 210, 150, 30, 0);
+    createCircle(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,R);
+	SDL_RenderPresent(rend);
 }
 SDL_DestroyWindow(win);
 SDL_Quit();
