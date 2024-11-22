@@ -58,3 +58,25 @@ Snake::Snake()
     if (!eatsound)
         cout << SDL_GetError() << endl;
 }
+
+void Snake::handleInput(SDL_Event &e) {
+    // Check if a key was pressed
+    if (e.type == SDL_KEYDOWN) {
+        switch (e.key.keysym.sym) {
+            case SDLK_UP:
+                // Prevent reversing into itself
+                if (direction != 1) direction = 0;
+                break;
+            case SDLK_DOWN:
+                if (direction != 0) direction = 1;
+                break;
+            case SDLK_LEFT:
+                if (direction != 3) direction = 2;
+                break;
+            case SDLK_RIGHT:
+                if (direction != 2) direction = 3;
+                break;
+        }
+    }
+}
+
