@@ -46,3 +46,15 @@ private:
     int direction;
     
 };
+
+Snake::Snake()
+{
+    grow();
+    direction = 3; // Start moving to the right
+    
+    spawnFood();
+    
+    eatsound = Mix_LoadWAV("toms-screams.mp3");
+    if (!eatsound)
+        cout << SDL_GetError() << endl;
+}
