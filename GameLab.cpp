@@ -80,3 +80,76 @@ void Snake::handleInput(SDL_Event &e) {
     }
 }
 
+
+void Snake::move(SDL_Renderer *renderer)
+{
+    SDL_Rect newHead = body.front();
+    switch (direction)
+    {
+    case 0: // Up
+        if (newHead.y <= 0)
+            newHead.y = SCREEN_HEIGHT - TILE_SIZE;
+        else
+            newHead.y -= TILE_SIZE;
+        break;
+    case 1: // Down
+        if (newHead.y >= SCREEN_HEIGHT - TILE_SIZE)
+            newHead.y = 0;
+        else
+            newHead.y += TILE_SIZE;
+        break;
+    case 2: // Left
+        if (newHead.x <= 0)
+            newHead.x = SCREEN_WIDTH - TILE_SIZE;
+        else
+            newHead.x -= TILE_SIZE;
+        break;
+    case 3: // Right
+        if (newHead.x >= SCREEN_WIDTH - TILE_SIZE)
+            newHead.x = 0;
+        else
+            newHead.x += TILE_SIZE;
+        break;
+    }
+    body.insert(body.begin(), newHead);
+    if (score != bonusOn && score % 5 == 0)
+    {
+        bonusfood();
+        bonusCreateTime = SDL_GetTicks();
+        bonusOn = score;
+    }
+
+    p_time = SDL_GetTicks();
+
+    if (p_time - bonusCreateTime >= 4000)
+        handlebonus();
+
+    if (newHead.x == food.x && newHead.y == food.y)
+    {
+        // grow();
+        playeatsound();
+        score++;
+
+        spawnFood();
+    }
+    else
+    {
+        body.pop_back();
+    }
+    
+    if (checkcollisionbonus())
+    {
+        score += 11;
+        handlebonus();
+    }
+    if (checkCollision())
+    {
+        SDL_RenderClear(renderer);
+        renderGameOver(renderer); // Render "Game Over" screen
+        SDL_RenderPresent(renderer);
+        SDL_Delay(3000);
+        std::cout << "Game Over!" << std::endl;
+        SDL_Quit();
+        exit(0);
+    }
+}
