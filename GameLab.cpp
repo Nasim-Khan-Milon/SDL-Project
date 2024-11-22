@@ -17,3 +17,32 @@ const int TILE_SIZE = 10;
 int bonusOn = 0;
 int bonusCreateTime, p_time;
 TTF_Font* font = nullptr; 
+
+class Snake
+{
+public:
+    Snake();
+    void handleInput(SDL_Event &e);
+    void move(SDL_Renderer *renderer);
+    void render(SDL_Renderer *renderer);
+    bool checkCollision();
+    void grow();
+    
+    void bonusfood();
+    
+    
+    bool checkcollisionbonus();
+    ;
+    
+    void renderGameOver(SDL_Renderer *renderer);
+
+    int score = 0;
+
+private:
+    SDL_Rect food;
+    
+    vector<SDL_Rect> body;
+    
+    int direction;
+    
+};
