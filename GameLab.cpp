@@ -80,6 +80,19 @@ void Snake::handleInput(SDL_Event &e) {
     }
 }
 
+void Snake::generateObstacles()
+{
+    obstacles.clear();
+
+    int obstacleWidth = 3 * TILE_SIZE;
+    int obstacleHeight = 10 * TILE_SIZE; // Adjust the height as needed
+
+    obstacles.push_back({0, 350, obstacleHeight + 70, obstacleWidth});    // 345
+    obstacles.push_back({140, 0, obstacleWidth, obstacleHeight + 200});   // 145
+    obstacles.push_back({470, 110, obstacleHeight + 70, obstacleWidth});  // 3rd
+    obstacles.push_back({470, 180, obstacleWidth, obstacleHeight + 200}); // 465
+}
+
 
 void Snake::move(SDL_Renderer *renderer)
 {
