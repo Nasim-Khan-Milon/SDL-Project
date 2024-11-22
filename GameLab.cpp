@@ -32,7 +32,7 @@ public:
     
     
     bool checkcollisionbonus();
-    ;
+    
     
     void renderGameOver(SDL_Renderer *renderer);
 
