@@ -265,3 +265,20 @@ void Snake::bonusfood()
     bonus.h = TILE_SIZE * 2;
 }
 
+bool Snake::isFoodCollidingWithObstacles()
+{
+    // Check collision with obstacles
+    for (const auto &obstacle : obstacles)
+    {
+        if (food.x < obstacle.x + obstacle.w &&
+            food.x + TILE_SIZE > obstacle.x &&
+            food.y < obstacle.y + obstacle.h &&
+            food.y + TILE_SIZE > obstacle.y)
+        {
+            return true; // Collision with obstacle
+        }
+    }
+    return false; // No collision
+}
+
+
