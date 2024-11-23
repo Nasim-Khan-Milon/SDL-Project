@@ -243,3 +243,14 @@ void Snake::grow()
     }
 }
 
+void Snake::spawnFood()
+{
+    do
+    {
+        food.x = rand() % (SCREEN_WIDTH / TILE_SIZE) * TILE_SIZE;
+        food.y = rand() % (SCREEN_HEIGHT / TILE_SIZE) * TILE_SIZE;
+    } while (isFoodCollidingWithObstacles());
+    food.w = TILE_SIZE;
+    food.h = TILE_SIZE;
+}
+
