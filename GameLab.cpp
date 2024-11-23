@@ -40,20 +40,20 @@ public:
 
 private:
     SDL_Rect food;
-    
+    SDL_Rect bonus = {-1, -1, 0, 0};
     vector<SDL_Rect> body;
-    
+    vector<SDL_Rect> obstacles;
     int direction;
-    
+    Mix_Chunk *eatsound;
 };
 
 Snake::Snake()
 {
     grow();
     direction = 3; // Start moving to the right
-    
+    generateObstacles();
     spawnFood();
-    
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 1, 1024);
     eatsound = Mix_LoadWAV("toms-screams.mp3");
     if (!eatsound)
         cout << SDL_GetError() << endl;
@@ -315,5 +315,53 @@ void Snake::renderGameOver(SDL_Renderer *renderer)
 
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
+}
+
+
+int main(int argc, char *argv[])
+{
+    SDL_Window *window = nullptr;
+    SDL_Renderer *renderer = nullptr;
+
+    SDL_Init(SDL_INIT_EVERYTHING);
+    TTF_Init();
+    font = TTF_OpenFont("KnightWarrior-w16n8.otf", 24);
+    window = SDL_CreateWindow("Snake Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+    Snake snake;
+    SDL_Event e;
+    bool quit = false;
+
+    while (!quit)
+    {
+        while (SDL_PollEvent(&e) != 0)
+        {
+            if (e.type == SDL_QUIT)
+            {
+                quit = true;
+            }
+            snake.handleInput(e);
+        }
+
+        snake.move(renderer);
+
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+
+        snake.render(renderer);
+
+        SDL_RenderPresent(renderer);
+
+        SDL_Delay(100);
+    }
+
+    TTF_CloseFont(font);
+    TTF_Quit();
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
+    return 0;
 }
 
