@@ -302,4 +302,18 @@ void Snake::handlebonus()
     bonus = {-1, -1, 0, 0};
 }
 
+void Snake::renderGameOver(SDL_Renderer *renderer)
+{
+    SDL_Color textColor = {255, 0, 0, 255}; // Red color
+    SDL_Surface *surface = TTF_RenderText_Solid(font, "Game Over", textColor);
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_Rect textRect = {SCREEN_WIDTH / 2 - surface->w / 2, SCREEN_HEIGHT / 2 - surface->h / 2, surface->w, surface->h}; // Center the text
+    SDL_RenderCopy(renderer, texture, NULL, &textRect);
+
+    Mix_Chunk *gameOverMusic = Mix_LoadWAV("toms-screams.mp3");
+    Mix_PlayChannel(-1, gameOverMusic, 0);
+
+    SDL_FreeSurface(surface);
+    SDL_DestroyTexture(texture);
+}
 
