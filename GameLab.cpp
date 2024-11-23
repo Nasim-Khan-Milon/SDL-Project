@@ -226,3 +226,20 @@ bool Snake::checkCollision()
     return false;
 }
 
+void Snake::grow()
+{
+    if (!body.empty())
+    {
+        // Get the last element in the body vector
+        SDL_Rect tail = body.back();
+
+        // Add a new rectangle adjacent to the tail (for example, to the left)
+        body.push_back({tail.x - TILE_SIZE, tail.y, TILE_SIZE, TILE_SIZE});
+    }
+    else
+    {
+        // If the body is empty, just add a new rectangle at some default position
+        body.push_back({320, 240, TILE_SIZE, TILE_SIZE});
+    }
+}
+
