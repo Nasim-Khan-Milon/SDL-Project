@@ -27,13 +27,13 @@ public:
     void render(SDL_Renderer *renderer);
     bool checkCollision();
     void grow();
-    
+    void spawnFood();
     void bonusfood();
-    
-    
+    void generateObstacles();
+    bool isFoodCollidingWithObstacles();
     bool checkcollisionbonus();
-    
-    
+    void handlebonus();
+    void playeatsound();
     void renderGameOver(SDL_Renderer *renderer);
 
     int score = 0;
@@ -79,6 +79,35 @@ void Snake::handleInput(SDL_Event &e) {
         }
     }
 }
+
+void Snake::render(SDL_Renderer *renderer)
+{
+
+    SDL_Color textColor = {25, 0, 255, 255};
+    SDL_Surface *surface = TTF_RenderText_Solid(font, ("Score: " + to_string(score)).c_str(), textColor);
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_Rect textRect = {SCREEN_WIDTH / 2 - surface->w / 2, 10, surface->w, surface->h}; // Adjust position as needed
+    SDL_RenderCopy(renderer, texture, NULL, &textRect);
+
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    for (const auto &segment : body)
+    {
+        SDL_RenderFillRect(renderer, &segment);
+    }
+
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Set color to red
+    SDL_RenderFillRect(renderer, &food);
+
+    SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255); // Set color to yellow
+    SDL_RenderFillRect(renderer, &bonus);
+
+    SDL_SetRenderDrawColor(renderer, 169, 169, 169, 255);
+    for (const auto &obstacle : obstacles)
+    {
+        SDL_RenderFillRect(renderer, &obstacle);
+    }
+}
+
 
 void Snake::generateObstacles()
 {
@@ -166,3 +195,10 @@ void Snake::move(SDL_Renderer *renderer)
         exit(0);
     }
 }
+
+void Snake::playeatsound()
+{
+    Mix_PlayChannel(-1, eatsound, 0);
+}
+
+
