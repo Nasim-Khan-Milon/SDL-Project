@@ -281,4 +281,25 @@ bool Snake::isFoodCollidingWithObstacles()
     return false; // No collision
 }
 
+bool Snake::checkcollisionbonus()
+{
+    if (body.front().x <= bonus.x + bonus.w &&
+        body.front().x + TILE_SIZE >= bonus.x &&
+        body.front().y <= bonus.y + bonus.h &&
+        body.front().y + TILE_SIZE >= bonus.y)
+    {
+
+        Mix_Chunk *bonusMusic = Mix_LoadWAV("toms-screams.mp3");
+        Mix_PlayChannel(-1, bonusMusic, 0);
+
+        return true;
+    }
+    return false;
+}
+
+void Snake::handlebonus()
+{
+    bonus = {-1, -1, 0, 0};
+}
+
 
