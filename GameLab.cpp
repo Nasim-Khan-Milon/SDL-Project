@@ -254,3 +254,14 @@ void Snake::spawnFood()
     food.h = TILE_SIZE;
 }
 
+void Snake::bonusfood()
+{
+    do
+    {
+        bonus.x = rand() % (SCREEN_WIDTH / TILE_SIZE) * TILE_SIZE;
+        bonus.y = rand() % (SCREEN_HEIGHT / TILE_SIZE) * TILE_SIZE;
+    } while (isFoodCollidingWithObstacles());
+    bonus.w = TILE_SIZE * 2;
+    bonus.h = TILE_SIZE * 2;
+}
+
