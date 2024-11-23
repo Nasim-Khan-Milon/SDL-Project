@@ -201,4 +201,28 @@ void Snake::playeatsound()
     Mix_PlayChannel(-1, eatsound, 0);
 }
 
+bool Snake::checkCollision()
+{
+    SDL_Rect head = body.front();
+
+    for (auto it = body.begin() + 1; it != body.end(); ++it)
+    {
+        if (head.x == it->x && head.y == it->y)
+        {
+            return true;
+        }
+    }
+
+    for (const auto &obstacle : obstacles)
+    {
+
+        if (body.front().x >= obstacle.x &&
+            body.front().x < obstacle.x + obstacle.w &&
+            body.front().y >= obstacle.y &&
+            body.front().y < obstacle.y + obstacle.h)
+            return true; // Collision with obstacle
+    }
+
+    return false;
+}
 
