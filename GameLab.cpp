@@ -35,6 +35,7 @@ public:
     void handlebonus();
     void playeatsound();
     void renderGameOver(SDL_Renderer *renderer);
+    void gameOver(SDL_Renderer* renderer);
 
     int score = 0;
 
@@ -122,6 +123,17 @@ void Snake::generateObstacles()
     obstacles.push_back({470, 270, obstacleWidth, obstacleHeight + 50});    //4st obstacle
 }
 
+void Snake::gameOver(SDL_Renderer* renderer)
+{
+    SDL_RenderClear(renderer);
+        renderGameOver(renderer); // Render "Game Over" screen
+        SDL_RenderPresent(renderer);
+        SDL_Delay(3000);
+        std::cout << "Game Over!" << std::endl;
+        SDL_Quit();
+        exit(0);
+}
+
 
 void Snake::move(SDL_Renderer *renderer)
 {
@@ -181,20 +193,16 @@ void Snake::move(SDL_Renderer *renderer)
     
     if (checkcollisionbonus())
     {
-        score += 11;
+        score += 5;
         handlebonus();
     }
-    if (checkCollision())
+    if (checkCollision())             //Check Self collision
     {
-        SDL_RenderClear(renderer);
-        renderGameOver(renderer); // Render "Game Over" screen
-        SDL_RenderPresent(renderer);
-        SDL_Delay(3000);
-        std::cout << "Game Over!" << std::endl;
-        SDL_Quit();
-        exit(0);
+        snake.gameOver(renderer);
     }
 }
+
+
 
 void Snake::playeatsound()
 {
