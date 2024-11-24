@@ -116,10 +116,10 @@ void Snake::generateObstacles()
     int obstacleWidth = 3 * TILE_SIZE;
     int obstacleHeight = 10 * TILE_SIZE; // Adjust the height as needed
 
-    obstacles.push_back({0, 350, obstacleHeight + 70, obstacleWidth});    // 345
-    obstacles.push_back({140, 0, obstacleWidth, obstacleHeight + 200});   // 145
-    obstacles.push_back({470, 110, obstacleHeight + 70, obstacleWidth});  // 3rd
-    obstacles.push_back({470, 180, obstacleWidth, obstacleHeight + 200}); // 465
+    obstacles.push_back({140, 80, obstacleWidth, obstacleHeight+50});       //1st obstacle
+    obstacles.push_back({140, 270, obstacleWidth, obstacleHeight+50});      //2st obstacle
+    obstacles.push_back({470, 80, obstacleWidth, obstacleHeight + 50});     //3st obstacle
+    obstacles.push_back({470, 270, obstacleWidth, obstacleHeight + 50});    //4st obstacle
 }
 
 
