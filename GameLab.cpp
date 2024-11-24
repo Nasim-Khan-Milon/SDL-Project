@@ -84,8 +84,14 @@ void Snake::handleInput(SDL_Event &e) {
 void Snake::render(SDL_Renderer *renderer)
 {
 
+    SDL_Surface *surface =  IMG_Load("./Bground.png");
+    SDL_Texture *coverTexture = SDL_CreateTextureFromSurface(renderer, surface);
+
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, coverTexture, nullptr, nullptr);
+   
     SDL_Color textColor = {25, 0, 255, 255};
-    SDL_Surface *surface = TTF_RenderText_Solid(font, ("Score: " + to_string(score)).c_str(), textColor);
+    surface = TTF_RenderText_Solid(font, ("Score: " + to_string(score)).c_str(), textColor);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_Rect textRect = {SCREEN_WIDTH / 2 - surface->w / 2, 10, surface->w, surface->h}; // Adjust position as needed
     SDL_RenderCopy(renderer, texture, NULL, &textRect);
@@ -196,9 +202,9 @@ void Snake::move(SDL_Renderer *renderer)
         score += 5;
         handlebonus();
     }
-    if (checkCollision())             //Check Self collision
+    if (checkCollision())             //Check Self collision and collision with abstacle
     {
-        snake.gameOver(renderer);
+        gameOver(renderer);
     }
 }
 
@@ -209,7 +215,7 @@ void Snake::playeatsound()
     Mix_PlayChannel(-1, eatsound, 0);
 }
 
-bool Snake::checkCollision()
+bool Snake::checkCollision()        //Check Self collision and collision with obstacle
 {
     SDL_Rect head = body.front();
 
@@ -228,7 +234,7 @@ bool Snake::checkCollision()
             body.front().x < obstacle.x + obstacle.w &&
             body.front().y >= obstacle.y &&
             body.front().y < obstacle.y + obstacle.h)
-            return true; // Collision with obstacle
+            return true;
     }
 
     return false;
@@ -317,6 +323,9 @@ void Snake::renderGameOver(SDL_Renderer *renderer)
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_Rect textRect = {SCREEN_WIDTH / 2 - surface->w / 2, SCREEN_HEIGHT / 2 - surface->h / 2, surface->w, surface->h}; // Center the text
     SDL_RenderCopy(renderer, texture, NULL, &textRect);
+
+
+    
 
     Mix_Chunk *gameOverMusic = Mix_LoadWAV("toms-screams.mp3");
     Mix_PlayChannel(-1, gameOverMusic, 0);
