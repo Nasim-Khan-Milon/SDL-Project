@@ -16,7 +16,7 @@ const int SCREEN_HEIGHT = 480;
 const int TILE_SIZE = 10;
 int bonusOn = 0;
 int bonusCreateTime, p_time;
-TTF_Font* font = nullptr; 
+TTF_Font *font = nullptr;
 
 class Snake
 {
@@ -35,7 +35,7 @@ public:
     void handlebonus();
     void playeatsound();
     void renderGameOver(SDL_Renderer *renderer);
-    void gameOver(SDL_Renderer* renderer);
+    void gameOver(SDL_Renderer *renderer);
 
     int score = 0;
 
@@ -60,23 +60,30 @@ Snake::Snake()
         cout << SDL_GetError() << endl;
 }
 
-void Snake::handleInput(SDL_Event &e) {
+void Snake::handleInput(SDL_Event &e)
+{
     // Check if a key was pressed
-    if (e.type == SDL_KEYDOWN) {
-        switch (e.key.keysym.sym) {
-            case SDLK_UP:
-                // Prevent reversing into itself
-                if (direction != 1) direction = 0;
-                break;
-            case SDLK_DOWN:
-                if (direction != 0) direction = 1;
-                break;
-            case SDLK_LEFT:
-                if (direction != 3) direction = 2;
-                break;
-            case SDLK_RIGHT:
-                if (direction != 2) direction = 3;
-                break;
+    if (e.type == SDL_KEYDOWN)
+    {
+        switch (e.key.keysym.sym)
+        {
+        case SDLK_UP:
+            // Prevent reversing into itself
+            if (direction != 1)
+                direction = 0;
+            break;
+        case SDLK_DOWN:
+            if (direction != 0)
+                direction = 1;
+            break;
+        case SDLK_LEFT:
+            if (direction != 3)
+                direction = 2;
+            break;
+        case SDLK_RIGHT:
+            if (direction != 2)
+                direction = 3;
+            break;
         }
     }
 }
@@ -84,12 +91,12 @@ void Snake::handleInput(SDL_Event &e) {
 void Snake::render(SDL_Renderer *renderer)
 {
 
-    SDL_Surface *surface =  IMG_Load("./Bground.png");
+    SDL_Surface *surface = IMG_Load("./Bground.png");
     SDL_Texture *coverTexture = SDL_CreateTextureFromSurface(renderer, surface);
 
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, coverTexture, nullptr, nullptr);
-   
+
     SDL_Color textColor = {25, 0, 255, 255};
     surface = TTF_RenderText_Solid(font, ("Score: " + to_string(score)).c_str(), textColor);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
@@ -115,7 +122,6 @@ void Snake::render(SDL_Renderer *renderer)
     }
 }
 
-
 void Snake::generateObstacles()
 {
     obstacles.clear();
@@ -123,23 +129,22 @@ void Snake::generateObstacles()
     int obstacleWidth = 3 * TILE_SIZE;
     int obstacleHeight = 10 * TILE_SIZE; // Adjust the height as needed
 
-    obstacles.push_back({140, 80, obstacleWidth, obstacleHeight+50});       //1st obstacle
-    obstacles.push_back({140, 270, obstacleWidth, obstacleHeight+50});      //2st obstacle
-    obstacles.push_back({470, 80, obstacleWidth, obstacleHeight + 50});     //3st obstacle
-    obstacles.push_back({470, 270, obstacleWidth, obstacleHeight + 50});    //4st obstacle
+    obstacles.push_back({140, 80, obstacleWidth, obstacleHeight + 50});  // 1st obstacle
+    obstacles.push_back({140, 270, obstacleWidth, obstacleHeight + 50}); // 2st obstacle
+    obstacles.push_back({470, 80, obstacleWidth, obstacleHeight + 50});  // 3st obstacle
+    obstacles.push_back({470, 270, obstacleWidth, obstacleHeight + 50}); // 4st obstacle
 }
 
-void Snake::gameOver(SDL_Renderer* renderer)
+void Snake::gameOver(SDL_Renderer *renderer)
 {
     SDL_RenderClear(renderer);
-        renderGameOver(renderer); // Render "Game Over" screen
-        SDL_RenderPresent(renderer);
-        SDL_Delay(3000);
-        std::cout << "Game Over!" << std::endl;
-        SDL_Quit();
-        exit(0);
+    renderGameOver(renderer); // Render "Game Over" screen
+    SDL_RenderPresent(renderer);
+    SDL_Delay(3000);
+    std::cout << "Game Over!" << std::endl;
+    SDL_Quit();
+    exit(0);
 }
-
 
 void Snake::move(SDL_Renderer *renderer)
 {
@@ -196,26 +201,24 @@ void Snake::move(SDL_Renderer *renderer)
     {
         body.pop_back();
     }
-    
+
     if (checkcollisionbonus())
     {
         score += 5;
         handlebonus();
     }
-    if (checkCollision())             //Check Self collision and collision with abstacle
+    if (checkCollision()) // Check Self collision and collision with abstacle
     {
         gameOver(renderer);
     }
 }
-
-
 
 void Snake::playeatsound()
 {
     Mix_PlayChannel(-1, eatsound, 0);
 }
 
-bool Snake::checkCollision()        //Check Self collision and collision with obstacle
+bool Snake::checkCollision() // Check Self collision and collision with obstacle
 {
     SDL_Rect head = body.front();
 
@@ -318,14 +321,29 @@ void Snake::handlebonus()
 
 void Snake::renderGameOver(SDL_Renderer *renderer)
 {
+    //Show Game Over
     SDL_Color textColor = {255, 0, 0, 255}; // Red color
     SDL_Surface *surface = TTF_RenderText_Solid(font, "Game Over", textColor);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_Rect textRect = {SCREEN_WIDTH / 2 - surface->w / 2, SCREEN_HEIGHT / 2 - surface->h / 2, surface->w, surface->h}; // Center the text
     SDL_RenderCopy(renderer, texture, NULL, &textRect);
 
-
-    
+    // Show final score
+    textColor = {255, 0, 0, 255}; // Red color
+    // Create the final score text
+    string finalScoreText = "FINAL SCORE : " + std::to_string(score);
+    // Render text to surface
+    surface = TTF_RenderText_Solid(font, finalScoreText.c_str(), textColor);
+    // Convert surface to texture
+    texture = SDL_CreateTextureFromSurface(renderer, surface);
+    // Create a rectangle to center the text
+    textRect = {SCREEN_WIDTH / 2 - surface->w / 2,SCREEN_HEIGHT / 2 - surface->h / 2 + 20,surface->w,surface->h};
+    // Free the surface after creating the texture
+    SDL_FreeSurface(surface);
+    // Copy the texture to the renderer
+    SDL_RenderCopy(renderer, texture, NULL, &textRect);
+    // Destroy the texture after use (optional, depends on rendering loop)
+    SDL_DestroyTexture(texture);
 
     Mix_Chunk *gameOverMusic = Mix_LoadWAV("toms-screams.mp3");
     Mix_PlayChannel(-1, gameOverMusic, 0);
@@ -333,7 +351,6 @@ void Snake::renderGameOver(SDL_Renderer *renderer)
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
 }
-
 
 int main(int argc, char *argv[])
 {
@@ -381,4 +398,3 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
