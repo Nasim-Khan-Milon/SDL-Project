@@ -55,7 +55,7 @@ Snake::Snake()
     generateObstacles();
     spawnFood();
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 1, 1024);
-    eatsound = Mix_LoadWAV("toms-screams.mp3");
+    eatsound = Mix_LoadWAV("eat.wav");
     if (!eatsound)
         cout << SDL_GetError() << endl;
 }
@@ -177,7 +177,7 @@ void Snake::move(SDL_Renderer *renderer)
         break;
     }
     body.insert(body.begin(), newHead);
-    if (score != bonusOn && score % 5 == 0)
+    if (bonusOn!=score && score % 5 == 0)
     {
         bonusfood();
         bonusCreateTime = SDL_GetTicks();
@@ -204,7 +204,7 @@ void Snake::move(SDL_Renderer *renderer)
 
     if (checkcollisionbonus())
     {
-        score += 5;
+        score += 6;
         handlebonus();
     }
     if (checkCollision()) // Check Self collision and collision with abstacle
@@ -306,7 +306,7 @@ bool Snake::checkcollisionbonus()
         body.front().y + TILE_SIZE >= bonus.y)
     {
 
-        Mix_Chunk *bonusMusic = Mix_LoadWAV("toms-screams.mp3");
+        Mix_Chunk *bonusMusic = Mix_LoadWAV("suiii.mp3");
         Mix_PlayChannel(-1, bonusMusic, 0);
 
         return true;
@@ -345,7 +345,7 @@ void Snake::renderGameOver(SDL_Renderer *renderer)
     // Destroy the texture after use (optional, depends on rendering loop)
     SDL_DestroyTexture(texture);
 
-    Mix_Chunk *gameOverMusic = Mix_LoadWAV("toms-screams.mp3");
+    Mix_Chunk *gameOverMusic = Mix_LoadWAV("gameOver.mp3");
     Mix_PlayChannel(-1, gameOverMusic, 0);
 
     SDL_FreeSurface(surface);
