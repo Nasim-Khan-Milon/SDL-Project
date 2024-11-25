@@ -11,8 +11,8 @@
 
 using namespace std;
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 540;
+const int SCREEN_HEIGHT = 380;
 const int TILE_SIZE = 10;
 int bonusOn = 0;
 int bonusCreateTime, p_time;
@@ -129,10 +129,10 @@ void Snake::generateObstacles()
     int obstacleWidth = 3 * TILE_SIZE;
     int obstacleHeight = 10 * TILE_SIZE; // Adjust the height as needed
 
-    obstacles.push_back({140, 80, obstacleWidth, obstacleHeight + 50});  // 1st obstacle
-    obstacles.push_back({140, 270, obstacleWidth, obstacleHeight + 50}); // 2st obstacle
-    obstacles.push_back({470, 80, obstacleWidth, obstacleHeight + 50});  // 3st obstacle
-    obstacles.push_back({470, 270, obstacleWidth, obstacleHeight + 50}); // 4st obstacle
+    obstacles.push_back({100, 50, obstacleWidth, obstacleHeight + 20});  // 1st obstacle
+    obstacles.push_back({100, 200, obstacleWidth, obstacleHeight + 20}); // 2st obstacle
+    obstacles.push_back({400, 50, obstacleWidth, obstacleHeight + 20});  // 3st obstacle
+    obstacles.push_back({400, 200, obstacleWidth, obstacleHeight + 20}); // 4st obstacle
 }
 
 void Snake::gameOver(SDL_Renderer *renderer)
@@ -328,22 +328,22 @@ void Snake::renderGameOver(SDL_Renderer *renderer)
     SDL_Rect textRect = {SCREEN_WIDTH / 2 - surface->w / 2, SCREEN_HEIGHT / 2 - surface->h / 2, surface->w, surface->h}; // Center the text
     SDL_RenderCopy(renderer, texture, NULL, &textRect);
 
-    // Show final score
-    textColor = {255, 0, 0, 255}; // Red color
-    // Create the final score text
-    string finalScoreText = "FINAL SCORE : " + std::to_string(score);
-    // Render text to surface
-    surface = TTF_RenderText_Solid(font, finalScoreText.c_str(), textColor);
-    // Convert surface to texture
-    texture = SDL_CreateTextureFromSurface(renderer, surface);
-    // Create a rectangle to center the text
-    textRect = {SCREEN_WIDTH / 2 - surface->w / 2,SCREEN_HEIGHT / 2 - surface->h / 2 + 20,surface->w,surface->h};
-    // Free the surface after creating the texture
-    SDL_FreeSurface(surface);
-    // Copy the texture to the renderer
-    SDL_RenderCopy(renderer, texture, NULL, &textRect);
-    // Destroy the texture after use (optional, depends on rendering loop)
-    SDL_DestroyTexture(texture);
+    // // Show final score
+    // textColor = {255, 0, 0, 255}; // Red color
+    // // Create the final score text
+    // string finalScoreText = "FINAL SCORE : " + std::to_string(score);
+    // // Render text to surface
+    // surface = TTF_RenderText_Solid(font, finalScoreText.c_str(), textColor);
+    // // Convert surface to texture
+    // texture = SDL_CreateTextureFromSurface(renderer, surface);
+    // // Create a rectangle to center the text
+    // textRect = {SCREEN_WIDTH / 2 - surface->w / 2,SCREEN_HEIGHT / 2 - surface->h / 2 + 20,surface->w,surface->h};
+    // // Free the surface after creating the texture
+    // SDL_FreeSurface(surface);
+    // // Copy the texture to the renderer
+    // SDL_RenderCopy(renderer, texture, NULL, &textRect);
+    // // Destroy the texture after use (optional, depends on rendering loop)
+    // SDL_DestroyTexture(texture);
 
     Mix_Chunk *gameOverMusic = Mix_LoadWAV("gameOver.mp3");
     Mix_PlayChannel(-1, gameOverMusic, 0);
